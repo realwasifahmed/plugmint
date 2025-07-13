@@ -84,4 +84,42 @@ class MigrationManager
             }
         }
     }
+
+    public static function refreshAll()
+    {
+        self::ensureMigrationsTable();
+
+        $dir = __DIR__ . '/migrations/';
+        $files = glob($dir . '*.php');
+        if (!$files) {
+            echo "No migration files found.\n";
+            return;
+        }
+
+        // 1. Run down() on each migration (drop tables, if down() exists)
+        foreach ($files as $file) {
+            require_once $file;
+
+            // Extract class name (same as runAll logic)
+            $base = basename($file, '.php');
+            $parts = explode('_', $base, 5);
+            $classPart = isset($parts[4]) ? $parts[4] : $parts[count($parts) - 1];
+            $className = str_replace(' ', '', ucwords(str_replace('_', ' ', $classPart)));
+            $fqcn = "Plugmint\\Database\\Migrations\\$className";
+
+            if (class_exists($fqcn) && method_exists($fqcn, 'down')) {
+                echo "Rolling back: $className ...\n";
+                $fqcn::down();
+            }
+        }
+
+        // 2. Empty the migrations table
+        global $wpdb;
+        $migrationsTable = $wpdb->prefix . self::$table;
+        $wpdb->query("TRUNCATE TABLE `$migrationsTable`");
+        echo "Migration history cleared.\n";
+
+        // 3. Re-run all migrations (up)
+        self::runAll();
+    }
 }

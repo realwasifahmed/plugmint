@@ -6,5 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Psr\\Container\\' => array($vendorDir . '/psr/container/src'),
     'Plugmint\\' => array($baseDir . '/includes'),
+    'Faker\\' => array($vendorDir . '/fakerphp/faker/src/Faker'),
 );

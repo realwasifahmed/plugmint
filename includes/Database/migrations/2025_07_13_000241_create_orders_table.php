@@ -11,7 +11,7 @@ class CreateOrdersTable
         Schema::create('orders', function($table) {
             $table->id();
             $table->string('column1');
-            $table->TEXT('Data');
+            $table->text('Data');
             $table->timestamps();
         });
     }

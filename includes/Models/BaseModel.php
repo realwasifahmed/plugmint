@@ -107,4 +107,40 @@ abstract class BaseModel
         $short = strtolower(preg_replace('/^.*\\\\/', '', $called));
         return (substr($short, -1) === 's') ? $short : $short . 's';
     }
+
+    public function hasMany($relatedClass, $foreignKey, $localKey = null)
+    {
+        global $wpdb;
+        $localKey = $localKey ?: $this->primaryKey;
+        $localValue = $this->attributes[$localKey] ?? null;
+
+        if (!$localValue) return [];
+
+        $related = new $relatedClass();
+        $relatedTable = $related->table;
+        $results = $wpdb->get_results(
+            $wpdb->prepare("SELECT * FROM {$wpdb->prefix}{$relatedTable} WHERE {$foreignKey} = %s", $localValue),
+            ARRAY_A
+        );
+
+        return array_map(function ($row) use ($relatedClass) {
+            return new $relatedClass($row);
+        }, $results);
+    }
+
+    public function belongsTo($relatedClass, $foreignKey, $ownerKey = 'id')
+    {
+        global $wpdb;
+        $foreignValue = $this->attributes[$foreignKey] ?? null;
+        if (!$foreignValue) return null;
+
+        $related = new $relatedClass();
+        $relatedTable = $related->table;
+        $row = $wpdb->get_row(
+            $wpdb->prepare("SELECT * FROM {$wpdb->prefix}{$relatedTable} WHERE {$ownerKey} = %s", $foreignValue),
+            ARRAY_A
+        );
+
+        return $row ? new $relatedClass($row) : null;
+    }
 }

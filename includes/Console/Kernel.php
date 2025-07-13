@@ -6,6 +6,8 @@ use Plugmint\Console\Commands\AdminPageCommand;
 use Plugmint\Console\Commands\ControllerCommand;
 use Plugmint\Console\Commands\DropTableCommand;
 use Plugmint\Console\Commands\HelloCommand;
+use Plugmint\Console\Commands\MakeModelCommand;
+use Plugmint\Console\Commands\MigrateRefreshCommand;
 use Plugmint\Console\Commands\MigrationCommand;
 use Plugmint\Console\Commands\SubmenuCommand;
 use Plugmint\Database\MigrationManager;
@@ -21,7 +23,9 @@ class Kernel
         'make:migration' => [MigrationCommand::class, 'handle'],
         'make:admin_menu' => [AdminPageCommand::class, 'handle'],
         'make:submenu' => [SubmenuCommand::class, 'handle'],
-        'drop:table' => [DropTableCommand::class, 'handle']
+        'drop:table' => [DropTableCommand::class, 'handle'],
+        'migrate:refresh' => [MigrateRefreshCommand::class, 'handle'],
+        'make:model' => [MakeModelCommand::class, 'handle'],
     ];
 
     public static function handle($argv)
