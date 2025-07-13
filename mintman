@@ -1,0 +1,17 @@
+<?php
+
+use Plugmint\Console\Kernel;
+
+require __DIR__ . '/vendor/autoload.php';
+
+$wpLoad = realpath(__DIR__ . '/../../../wp-load.php');
+echo "Trying to load: $wpLoad\n";
+if (!file_exists($wpLoad)) {
+    exit("Cannot find wp-load.php at $wpLoad\n");
+}
+require_once $wpLoad;
+
+// (Optional: If your commands use WP stuff, load WordPress here)
+// require_once '/path/to/your/wp-load.php';
+
+Kernel::handle($argv);

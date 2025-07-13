@@ -1,0 +1,36 @@
+{
+    "name": "plugmint/plugmint",
+    "type": "library",
+    "description": "A Laravel-inspired WordPress plugin development framework with MVC structure, migrations, seeders, and zero Composer bloat.",
+    "keywords": [
+        "wordpress",
+        "plugin",
+        "framework",
+        "mvc",
+        "migrations"
+    ],
+    "homepage": "https://plugmint.dev",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Wasif Ahmed",
+            "email": "plugmint@visuallyvogue.com",
+            "homepage": "https://wasifcode.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Plugmint\\": "includes/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
